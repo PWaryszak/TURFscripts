@@ -1,0 +1,383 @@
+---
+title: "Introduction to R"
+author: "Pawel Waryszak"
+date: "December 01, 2017"
+output:
+  pdf_document:
+    number_sections: yes
+    toc: yes
+  html_document:
+    number_sections: yes
+    toc: yes
+subtitle:  Basic R-Walk with TURF
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(dev='png')
+```
+
+# Getting Started
+##Download R and R-Studio on your computer
+
+You would need to have R-Studio and R install first. R is like an engine and R-Studio is like a car (interface) that uses that engine.
+
+Here is the link:
+https://courses.edx.org/courses/UTAustinX/UT.7.01x/3T2014/56c5437b88fa43cf828bff5371c6a924/
+Please follow the instructions for Mac or Windows respectively:
+
+
+## A fancy calculator?
+To get started, let's explore some basic arithmetic in R. 
+
+Type some commands like those below into a new script in RStudio and send them line by line to the R console. You can do this by clicking the cursor anywhere on the line you wish to send to the R console and clicking "Run" in the top right-side of the script window. 
+
+```{r arithmetic, eval=FALSE}
+6+9
+4-2
+200*6
+60/3
+3^2 
+```
+
+You could also write these commands directly into the R console for immediate execution -- but then you will not have any record of your commands.
+
+R follows the conventional precedence for mathematical operators:
+```{r, eval=FALSE}
+4*2 + 3 
+4*(2 + 3)
+```
+
+## Assigning variables
+So far we have just used R as a fancy calculator. The real power of programming comes from storing our data so that we can access and further manipulate them later on.
+
+To do this we want to *assign* the output to a variable. 
+
+The `<--' symbol in R (without the quotation marks) stands for "assign". For example,
+
+```{r}
+A <- 5 + 10 
+```
+
+is telling R to first add 5 to 10 and then assign the result to the variable **A**. 
+
+
+What do you think will happen if we type *A* into R after running the above command?
+
+It is important to note that R is case-sensitive. Try typing a lowercase *a* into the R console. The variable A exists in R and has been assigned the value 15. However, the variable a does not exist in R (yet -- we could create it if we wished) and R returns an error.
+
+Spaces typically do not matter in R. So for example the two variables created here are identical:
+
+```{r}
+B <- 6 * 5 
+C <-6*5 
+```
+
+You can check this by typing *B* and *C* into the R console and checking that the results are the same. Another way to check if two variables are identical is to use the `==' function (this means *is equal to*). For example:
+
+```{r}
+B == C 
+```
+This is an example of a Boolean function -- a function checks a condition returns either TRUE or FALSE. 
+
+You can try some others: e.g,. `<` for *is less than*, `<=` for *is equal or less than*, `>` for *is greater than* and `>=` for *is equal or greater than*.
+
+
+The use of Boolean logic is a powerful feature in R, and is often used for sub-setting information. We will be looking at subletting later on.
+
+## Tip 1: Use comments! 
+The # symbol denotes a *comment*, and R ignores the # symbol and all text the follows it on a line. It is very good practice to use comments throughout your script to make it easier for others (and your future self!) to understand what you are doing in your code (and why!). For example:
+
+```{r}
+MaxAge <- 50 # The maximum age in my data
+oneTenth <- 1/10 * MaxAge # This is one-tenth of the maximum age 
+# (I don't know why you would want to calculate this)
+
+```
+
+## Avoid Common Mistakes 1: Only one command per line 
+Try entering the following command into R:
+```{r eval=FALSE}
+bignum <- 1E5 smallnum <- 1E-10
+```
+What has gone wrong?
+
+The error message has told us that there is an unexpected symbol in the command. This is because we have entered two commands onto the same line. R executes the entire line at one, and doesn't know how to make sense of this command.
+
+We can avoid this problem by entering each command onto a separate line:
+```{r}
+bignum <- 1E5 
+smallnum <- 1E-10
+```
+The variables `bignum` and `smallnum` are now stored in the memory.  You can check this by typing the variable name in the R console.
+
+Note: you can enter more than one command on a single line if you separate them using the *;* symbol:
+```{r}
+bignum <- 1E5; smallnum <- 1E-10
+```
+However, this is generally not good practice and you should avoid doing this.
+
+
+## Vectors and Matrices
+So far we have only looked at storing single numbers in R. R has a number of complex data structures, including vectors, matrices, arrays, data frames, lists and others. The two most commonly used data structures are **vectors** and **matrices**. 
+
+We can create a vector using the `c` function (**concatenate**). Functions in R are followed by a pair of parentheses which contain the arguments for the function. 
+
+For example:
+```{r, eval=FALSE}
+c(1, 2, 3, 4, 5)
+```
+is telling R to use the function `c` to create a vector of the integers 1 to 5. 
+
+Just like single numbers, we can assign vectors to variables:
+
+```{r}
+D <- c(2, 4, 6, 8)
+E <- c(3, 5, 7, 9)
+```
+As you can see, this code assigned two vectors of length 4 (four elements in each vector) to the variable names *D* and *E*.
+
+A powerful feature of R is that it can most basic operations can be applied on an entire vector. This enables a user to perform a large number of calculations with only a single command. For example:
+```{r, eval=FALSE}
+D + E 
+D * E
+D - 1 
+D^2 + E 
+3*E - D 
+```
+
+In these examples we only used short vectors (length 4) and simple operations. These operations could probably be very easily and quickly calculated without using R. However, imagine if these vectors contained several hundred elements (or thousands or millions). 
+
+The second most commonly used data type in R is the matrix. The matrix operations are another powerful feature of R. 
+
+There are several ways to create a matrix in R. The most common way is to use the **matrix** function:
+
+```{r}
+X <- matrix(c(1, 0, 0, 0, 1, 0, 0, 0, 1), nrow=3)
+```
+This command tells R to create a 3 x 3 identity matrix (zeros with ones on the diagonal). You can check this by typing `X` into the R console.
+
+Let's create a matrix with all ones:
+```{r}
+X <- matrix(1, nrow=3, ncol=3)
+```
+
+You can also create a matrix by joining two vectors together:
+```{r}
+X <- 1:10
+Y <- 11:20
+MyMat <- matrix(c(X,Y), byrow=TRUE, nrow=2)
+```
+
+Here we use the **:** command -- this handy shortcut tells R to create a vector of integers from (in the case of X) 1 to 10. 
+
+We can also join two matrices together by column by using the **cbind** (column bind) function:
+
+```{r, eval=FALSE}
+mat1 <- matrix(c(8, 1, 3, 4, 9, 8), nrow=2) # 2 by 3 matrix
+mat2 <- matrix(c(12, 7, 4, 6, 13, 2), nrow=2) # 2 by 3 matrix
+cbind(mat1, mat2) # 2 by 6 matrix
+```
+
+Or we can join them by row using **rbind** (row bind):
+
+```{r, eval=FALSE}
+rbind(mat1, mat2) # 4 by 3 matrix
+```
+
+
+## Recycling Rules
+Vectors arithmetic in R is performed element by element. This means it is very easy to perform arithmetic on an entire vector (or matrix) at once.  Vectors do not need to be the same length. However, if they are not, it is important to be aware of R's recycling rules.
+
+For example, adding a scalar to a vector:
+
+```{r}
+a <- 1:5
+b <- 3
+a + b
+```
+Seems straightforward, 3 is added to each element of the vector *a*.
+
+But what happens here?
+```{r}
+a <- 1:5
+b <- c(2,3)
+a + b
+```
+
+The vector `b` is being recycled: 2 is added to the first element of `a`, 3 is added to the second element, 2 is again added to the third element (recycling `b`), and 3 added to the fourth element, etc. 
+
+Notice that R performs the calculation, but displays a warning message -- the two vectors are not the same length. This only occurs because the length of vector `b` is not divisible into the length of vector `a`.
+
+Let's look at a few more examples:
+
+```{r}
+a <- 1:6
+b <- c(1,2)
+a + b
+```
+Everything okay -- vector *b* was recycled 3  times.
+
+```{r}
+a <- 1:5
+b <- 1:5
+a + b
+```
+Two vectors are the same length, no problems (`b` isn't recycled).
+
+An example of using the recycling rules to make every third element in a vector a zero:
+```{r}
+a <- c(1,3,5,7,9,11,13,15,17,19,21,23)
+b <- c(1,1,0)
+newA <- a * b
+newA
+```
+
+It is important to remember that R will recycle any vectors where required - and it won't always give you a warning message that it recycling! This is often an advantage, but you need to be careful to ensure that R is doing exactly what you want it to do.  R will do what you **tell** it to do, not what you **intend** to do!
+
+## Avoid Common Mistakes 2: R is case sensitive
+Let's have a look at the matrix we created earlier:
+```{r, eval=FALSE}
+myMat
+```
+Another error message! What is wrong?
+
+Why can't R find the object `myMat`?
+
+**Remember R is case sensitive:** `myMat` and `MyMat` are not the same. The first doesn't exist, the second is an *object* we created earlier and refers to a 2 by 6 matrix.
+
+## Tip 2: Use sensible variable names
+So far we have been using silly variable names, such as *X*, *Y*, *mat*, etc.  Variables in R cannot start with a number or special symbol, but can be as long or short as you like.
+It is a good idea to get in the habit of using sensible variable names.  For example, a long variable name like `myfantasticdataset` gets too tiresome to repeatedly type and is hard to read. 
+
+Variable names should be short and informative. It also helps if you use a consistent style. Some people like to use [CamelCase](https://en.wikipedia.org/wiki/CamelCase) to separate words. For example, `TreeData`.
+
+## Avoid Common Mistakes 3: Unfinished lines
+Type the following command into R:
+```{r, eval=FALSE}
+NewMat <- matrix(1:16, nrow=4 
+```
+Now try to look at the contents of `NewMat` by typing the variable name into the R console.
+
+What is going on?
+
+Notice the `+` symbol in the R console instead of the `>` symbol?
+
+This indicates that R is waiting for additional instructions.  
+
+We forgot the closing parenthesis in our earlier command and R doesn't know that the command has finished.
+
+The `+` symbol in the R console indicates that R is waiting for further instructions and has not executed the command. 
+
+**This is often caused by one or more forgotten closed parentheses**
+
+Press the `Esc` key in the R console to cancel the command, and go back to add the closing parenthesis. 
+
+
+##MATRIX CHALLENGE
+Produce matrix and introduce yourself by extracting letters from that matrix:
+Example:
+```{r, eval=FALSE}
+m<-matrix(LETTERS[1:26], ncol= 2) #MATRIX of 26 ENGLISH LETTERS IN 2 COLUMNS
+# Run to see what my name is: 
+l1<-m[3,2] 
+l2<-m[1,1] 
+l3<-m[10,2]
+l4<-m[5,1] 
+l5<-m[12,1]
+paste0("My name is ",l1,l2,l3,l4,l5)#functions that joins my letter objects together.
+
+```
+
+
+# Introducing Functions 
+You may have noticed that we have been using several functions already. There are a large number of useful and powerful functions built into the R package. Don't be concerned about trying to remember them all. There are far more functions in R than any one person can remember! You will soon learn the functions that you use the most often. And you will discover more and more useful functions as you continue to use R. 
+
+Here we give just a basic overview of a number of the most common built-in functions.
+
+## A simple example
+First we will draw 20 numbers randomly from a standard normal distribution and assign them to the variable `V`. To do this we use the `rnorm` function:
+```{r}
+V <- rnorm(n=20, mean = 0, sd = 1)
+```
+To see the help for any of the built-in functions, type a question mark (?) followed by the function name: for example `?rnorm`.  
+
+Let's take a look at the help page for the `rnorm` function. 
+
+The help page shows four functions that relate to the *Normal Distribution*, and shows us that `rnorm` is a function that takes three **arguments**: *n*, *mean*, and *sd*.  The information in the *Arguments* section show us that `n` refers to the number of observations.  The `nean` and `sd` arguments have **default** values.  This means that we don't need to specify these arguments when we call the function -- if they are not included, R will use the default values.  Any argument that does not have a default value must be specified.  
+
+Note also that you don't need to refer to the arguments by name. If argument names aren't used in the function call, R assumes that arguments are in the order detailed in the help manual.  
+
+Can you see that these function calls are all the same (though of course the values will be different every time as they are **random** numbers)?
+
+```{r, eval=FALSE}
+rnorm(20) # first argument is n
+rnorm(20, 0, 1) # all three arguments, but mean and sd are the same as the defaults
+rnorm(sd=1, mean=0, n=20) # names used for all arguments, but in a different order 
+ #(usually not a great idea)
+```
+
+Why doesn't this work?
+```{r, eval=FALSE}
+MyRands <- rnorm(mean=50, sd=5)
+```
+
+## Basic operations (base R functions)
+Now we will create a new vector of random numbers and apply some different built-in functions. See if you can understand what each function is doing. Try to predict what the output from each function call will look like. Some should be straightforward, others are perhaps not so obvious. Look at the help file for each of the functions for further information. 
+
+```{r}
+V2 <- rnorm(15, 100, 10)
+```
+
+```{r, eval=FALSE}
+length(V2) 
+mean(V2)
+median(V2)
+sum(V2)
+min(V2)
+max(V2)
+range(V2)
+cumsum(V2)
+sin(V2)
+cos(V2)
+exp(V2)
+```
+
+## R Packages
+Many thousands of packages have been developed for R and are freely available for download. Typically these packages include a large number of additional functions that people have created to address particular problems. Whatever data analysis or statistical problem you are working on, it is almost certain that others have dealt with a similar problem before and a R package (or several) exists which will help you complete your analysis quickly and efficiently. 
+
+We will be using several R packages later, and you will continue to discover additional powerful packages as you continue to use R for your work.
+
+## Developing your own functions
+A very powerful feature of R is the ability for users to construct their own custom functions. Whenever you find yourself writing the same line of code multiple times, it is probably time to create your own function. If time allows, we will return to this idea later in the workshop.
+
+
+
+
+
+
+
+
+
+# Final Exercise -- Some R Functions
+Now it's time to test what we've learned so far. You would need to have R-Studio and R install first. R is like an engine and R-Studio is like a car (interface) that uses that engine.
+
+
+In this exercise we will use the `rnorm` function to create 1,000 random normally distributed numbers and exploring several R functions.
+
+Note that the first function that we are calling is `set.seed` with the argument `101`.  This function sets a seed value for the random number generator, and ensures that the random numbers that are generated by `rnorm` are the same on all our machines (hmm, that means they are not really random at all!).  The value of the argument for `set.seed` doesn't matter (`101` in this case) as long as we all have the same seed value.
+
+## The challenge
+
+1. Generate 1,000 normally distributed values (n=1000), mean=50, sd=10 and assign to a variable `myVars`
+2. Calculate the median value of `myVars`
+3. Calculate the maximum and minimum values of `myVars` and save to new variables
+4. Round the minimum value **down** and the maximum value **up** to integers (hint: you may need to search online for the functions that do this. It is not the `round` function, but something closely related)
+5. Multiply 14 * 4903 and assign to a new variable
+6. Multiply the rounded minimum and maximum values together and add the variable created in the previous step
+
+This exercise may be straightforward for those of you who have some experience with R -- and perhaps a bit more challenging for others!
+
+You may need to do a web search to find the name of the function you need. This is an important part of working with R!
+
+If you do not have time or you struggle finding a right answer I uploaded a file to GitHub that will help you solve this challenge much quicker. Go to the following file to see help file: https://github.com/PWaryszak/TURF/blob/master/Ex2_TURF_Final_Challenge_Help.R
