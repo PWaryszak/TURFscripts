@@ -24,4 +24,4 @@ WOTH.New.One.Pipeline<-WOTHS%>%distinct(WOTHS)%>%
   summarize(total= n(),Elev.mean=mean(SRTM_W_250), Elev.sd=sd(SRTM_W_250), Elev.min=min(SRTM_W_250), Elev.max=max(SRTM_W_250))%>%
   na.omit()
 
-View(WOTH.New.One.Pipeline)
+dim(WOTH.New.One.Pipeline)#54  8
