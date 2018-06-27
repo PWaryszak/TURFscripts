@@ -33,7 +33,7 @@ p1 <- ggplot(TURF_Survey, aes(x=Name, y=Time_Spent)) +
 p1
  
 #DRAW A STICKER:
- sticker(p1, package="TURF",p_x = 1, p_y = 1.6, p_size=16, s_x=1, s_y=.95, s_width=1.3, s_height=1,
+ sticker(p1, package="@TulaneURF",p_x = 1, p_y = 1.5, p_size=16, s_x=1, s_y=.95, s_width=1.3, s_height=1,
          h_fill = "white", h_color = "darkgreen", p_color = "darkgreen",
-         filename="TURF_Sticker1.png")
+         filename="TURF_Sticker2.png")
  
